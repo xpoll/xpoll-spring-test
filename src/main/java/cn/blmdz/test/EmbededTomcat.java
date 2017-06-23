@@ -11,19 +11,13 @@ import org.apache.catalina.webresources.StandardRoot;
 public class EmbededTomcat {
 	
 	public static void main(String[] args) throws Exception {
-        String webappDirLocation = "src/main/webapp/";
+		
         Tomcat tomcat = new Tomcat();
-
-        //The port that we should run on can be set into an environment variable
-        //Look for that variable and default to 8080 if it isn't there.
-        String webPort = System.getenv("PORT");
-        if(webPort == null || webPort.isEmpty()) {
-            webPort = "8080";
-        }
-
-        tomcat.setPort(Integer.valueOf(webPort));
-
-        StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
+        tomcat.setPort(8081);
+        
+        String path = new File("").getAbsolutePath();
+        String webappDirLocation = "src/main/webapp/";
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("/" + path.substring(path.lastIndexOf("\\") + 1), path + "/" + webappDirLocation);
 
         // Declare an alternative location for your "WEB-INF/classes" dir
         // Servlet 3.0 annotation will work
