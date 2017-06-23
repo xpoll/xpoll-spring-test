@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.  
+org/dtd/spring-beans.dtd">
+<beans>
+	<!--指定控制器的实现类，并且配置其参数的值 -->
+	<bean id="hiAction" class="cn.blmdz.test.HiAction">
+		<property name="hi">
+			<value>hi action!</value>
+		</property>
+		<property name="page">
+			<value>hello.jsp</value>
+		</property>
+	</bean>
+</beans> 
