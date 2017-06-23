@@ -3,21 +3,18 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Insert title here</title>
+	<title>index</title>
 </head>
 <body>
-<form action="/hello" method="POST">
-名：<input type="text" name="name">
-<br />
-<input type="submit" value="提交" />
-</form>
-<br />
-
-<form action="/upload" method="POST" enctype="multipart/form-data">
-文件：<input type="file" name="file">
-<br />
-<input type="submit" value="上传" />
-</form>
-
+	<h3>hello servlet!</h3>
+	<form action="<%=request.getContextPath() %>/hello" method="POST">
+		<input type="text" name="name">
+		<input type="submit" value="提交" />
+	</form>
+	<h3>hi action!</h3>
+	<form action="<%=request.getContextPath() %>/hi" method="POST">
+		<input type="text" name="name">
+		<input type="submit" value="提交" />
+	</form>
 </body>
 </html>
