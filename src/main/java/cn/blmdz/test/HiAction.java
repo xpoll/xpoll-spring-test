@@ -14,6 +14,10 @@ public class HiAction implements Controller {
 	private String hi;
 	private String page;
 	
+	public HiAction() {
+		System.out.println("HiAction");
+	}
+	
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
