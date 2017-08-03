@@ -2,13 +2,13 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.  
 org/dtd/spring-beans.dtd">
 <beans>
-	<!--指定控制器的实现类，并且配置其参数的值 -->
-	<bean id="hiAction" class="cn.blmdz.test.HiAction">
-		<property name="hi">
+	<bean id="hiAction" class="cn.blmdz.test.reflect.Car">
+		<property name="brand">
 			<value>hi action!</value>
 		</property>
-		<property name="page">
+		<property name="color">
 			<value>hello.jsp</value>
 		</property>
 	</bean>
+	
 </beans> 

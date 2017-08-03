@@ -8,11 +8,20 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+<!-- 
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+ -->
+ 
 	<!-- spring-ROOT容器-parent -->
+	<!-- 从类路径下加载spring配置文件，classpath关键字特指类路径下加载 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext-a-*.xml</param-value>
+		<param-value>classpath:applicationContext-bean.xml</param-value>
 	</context-param>
+	<!-- 负责启动spring容器的监听器，它将引用上文的参数获取spring配置 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -27,7 +36,6 @@
 			<param-value>classpath:applicationContext-dispatcher-servlet.xml</param-value>
 		</init-param>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
