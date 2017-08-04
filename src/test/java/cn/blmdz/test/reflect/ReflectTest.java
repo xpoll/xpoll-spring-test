@@ -8,6 +8,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+import cn.blmdz.test.test.Car;
+
 public class ReflectTest {
 
 	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -24,7 +26,7 @@ public class ReflectTest {
 		Car car = cons.newInstance();
 		Method m1 = clazz.getMethod("setBrand", String.class);
 		m1.invoke(car, "sb");
-		System.out.println(car.aaa());
+		car.aaa();
 //		Resource
 //		ResourceLoader
 //		BeanFactory

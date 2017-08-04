@@ -16,7 +16,14 @@
 		">
 	<context:component-scan base-package="cn.blmdz.test.dao, cn.blmdz.test.service" />
 
-
+	<!-- study -->
+	<bean id="car" class="cn.blmdz.test.test.Car" init-method="myinit" destroy-method="mydestory">
+		<property name="brand"><value>hi action!</value></property>
+		<property name="maxSpeed"><value>300</value></property>
+	</bean>
+	<bean id="myBeanFactoryPostProcessor" class="cn.blmdz.test.test.MyBeanFactoryPostProcessor"></bean>
+	<bean id="myBeanPostProcessor" class="cn.blmdz.test.test.MyBeanPostProcessor"></bean>
+	
 	<!-- transaction -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />

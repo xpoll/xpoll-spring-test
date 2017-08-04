@@ -2,12 +2,12 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.  
 org/dtd/spring-beans.dtd">
 <beans>
-	<bean id="hiAction" class="cn.blmdz.test.reflect.Car">
+	<bean id="car" class="cn.blmdz.test.test.Car" init-method="myinit" destroy-method="mydestory">
 		<property name="brand">
 			<value>hi action!</value>
 		</property>
-		<property name="color">
-			<value>hello.jsp</value>
+		<property name="maxSpeed">
+			<value>300</value>
 		</property>
 	</bean>
 	
