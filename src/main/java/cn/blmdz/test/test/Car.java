@@ -35,7 +35,7 @@ public class Car implements BeanFactoryAware, BeanNameAware, InitializingBean, D
 	@Override
 	public void afterPropertiesSet() {
 		System.out.println("Car afterPropertiesSet");
-	}
+	} 
 	
 	@Override
 	public void destroy() throws Exception {
