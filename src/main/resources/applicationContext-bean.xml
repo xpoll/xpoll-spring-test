@@ -18,8 +18,8 @@
 
 	<!-- study -->
 	<bean id="car" class="cn.blmdz.test.test.Car" init-method="myinit" destroy-method="mydestory">
-		<property name="brand"><value>hi action!</value></property>
-		<property name="maxSpeed"><value>300</value></property>
+		<property name="brand" value="hi action!" />
+		<property name="maxSpeed" value="300" />
 	</bean>
 	<bean id="myBeanFactoryPostProcessor" class="cn.blmdz.test.test.MyBeanFactoryPostProcessor"></bean>
 	<bean id="myBeanPostProcessor" class="cn.blmdz.test.test.MyBeanPostProcessor"></bean>

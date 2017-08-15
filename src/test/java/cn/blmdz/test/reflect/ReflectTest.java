@@ -4,10 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-
 import cn.blmdz.test.test.Car;
 
 public class ReflectTest {
@@ -30,5 +26,6 @@ public class ReflectTest {
 //		Resource
 //		ResourceLoader
 //		BeanFactory
+//		BeanDefinition
 	}
 }
