@@ -15,6 +15,19 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd
 		">
 	<context:component-scan base-package="cn.blmdz.test.dao, cn.blmdz.test.service" />
+	
+	<!-- 
+	<context:property-placeholder file-encoding="utf-8" location="classpath:application.properties"/>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	 -->
+	<bean class="cn.blmdz.test.config.MyPropertyPlaceholderConfigurer">
+		<property name="fileEncoding" value="utf-8" />
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
 
 	<!-- study -->
 	<bean id="car" class="cn.blmdz.test.test.Car" init-method="myinit" destroy-method="mydestory">

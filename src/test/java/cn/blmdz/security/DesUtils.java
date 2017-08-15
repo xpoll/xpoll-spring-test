@@ -10,9 +10,10 @@ import javax.crypto.KeyGenerator;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+@SuppressWarnings("restriction")
 public class DesUtils {
 	private static Key key;
-	private static String KEY_STR = "my_key_str";
+	private static String KEY_STR = "中文加密串发反反复复付付付付付付付";
 	private static String UTF_8 = "UTF8";
 	private static String DES = "DES";
 	
@@ -44,7 +45,7 @@ public class DesUtils {
 		try {
 			byte[] strBytes = new BASE64Decoder().decodeBuffer(str);
 			Cipher cipher = Cipher.getInstance(DES);
-			cipher.init(Cipher.ENCRYPT_MODE, key);
+			cipher.init(Cipher.DECRYPT_MODE, key);
 			byte[] decryptStrBytes = cipher.doFinal(strBytes);
 			return new String(decryptStrBytes, UTF_8);
 		} catch (Exception e) {
@@ -54,9 +55,7 @@ public class DesUtils {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		System.out.println(new BASE64Encoder().encode(new BASE64Decoder().decodeBuffer("str")));
-		
-		System.out.println(getEncryptString("str"));
-		System.out.println(getDecryptString("Cwk7ObSxpyQ="));
+		System.out.println(getEncryptString("strfffffff"));
+		System.out.println(getDecryptString(getEncryptString("str")));
 	}
 }
