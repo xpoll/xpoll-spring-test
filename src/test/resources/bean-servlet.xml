@@ -11,4 +11,7 @@ org/dtd/spring-beans.dtd">
 		</property>
 	</bean>
 	
+	<bean id="" class="">
+	</bean>
+	
 </beans> 
