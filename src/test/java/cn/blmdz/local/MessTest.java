@@ -8,10 +8,25 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class MessTest {
 
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) throws InterruptedException {
+		ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:bean-servlet.xml");
+		System.out.println(ac.getMessage("a", null, Locale.getDefault()));
+		System.out.println(ac.getMessage("a", null, Locale.US));
+		MessageSource ms1 = (MessageSource) ac.getBean("myResources1");
+		System.out.println(ms1.getMessage("a", null, Locale.getDefault()));
+		System.out.println(ms1.getMessage("a", null, Locale.US));
+		MessageSource ms2 = (MessageSource) ac.getBean("myResources2");
+		System.out.println(ms2.getMessage("a", null, Locale.getDefault()));
+		System.out.println(ms2.getMessage("a", null, Locale.US));
+//		Thread.sleep(10000);
+//		System.out.println(ms2.getMessage("a", null, Locale.getDefault()));
+//		System.out.println(ms2.getMessage("a", null, Locale.US));
 	}
 	
 	public void test(){
