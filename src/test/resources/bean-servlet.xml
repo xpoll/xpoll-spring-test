@@ -36,4 +36,7 @@ org/dtd/spring-beans.dtd">
 		<property name="cacheSeconds" value="5"/>
 	</bean>
 	
+	<bean class="cn.blmdz.event.SendListener" />
+	<bean class="cn.blmdz.event.Sender" />
+	
 </beans> 
