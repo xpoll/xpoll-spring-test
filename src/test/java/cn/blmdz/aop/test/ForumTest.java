@@ -5,21 +5,24 @@ import java.lang.reflect.Proxy;
 public class ForumTest {
 
 	public static void main(String[] args) {
-		ForumService forumService = new ForumServiceImpl1();
+		System.out.println("-----------正常逻辑------------");
+		ForumService forumService1 = new ForumServiceImpl1();
 		
-		forumService.removeTopic(29);
-		forumService.removeForum(10);
+		forumService1.removeTopic(29);
+		forumService1.removeForum(10);
 		
-		System.out.println("-----------------------");
+		System.out.println("------------JDK代理-----------");
+		ForumService forumService2 = (ForumService) Proxy.newProxyInstance(ForumServiceImpl2.class.getClassLoader(),
+				ForumServiceImpl2.class.getInterfaces(),
+				new PerformanceHandler(new ForumServiceImpl2()));
 		
-		ForumService target = new ForumServiceImpl2();
-		PerformanceHandler handle = new PerformanceHandler(target);
+		forumService2.removeTopic(22);
+		forumService2.removeForum(10);
 
-		ForumService proxy = (ForumService) Proxy.newProxyInstance(target.getClass().getClassLoader(),
-				target.getClass().getInterfaces(),
-				handle);
+		System.out.println("------------CGLib代理-----------");
+		ForumService forumService3 = (ForumService) new CglibProxy().getProxy(ForumServiceImpl3.class);
 		
-		proxy.removeTopic(22);
-		proxy.removeForum(10);
+		forumService3.removeTopic(90);
+		forumService3.removeForum(12);
 	}
 }
