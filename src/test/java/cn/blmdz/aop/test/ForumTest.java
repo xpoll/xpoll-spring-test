@@ -2,6 +2,8 @@ package cn.blmdz.aop.test;
 
 import java.lang.reflect.Proxy;
 
+import org.springframework.aop.BeforeAdvice;
+
 public class ForumTest {
 
 	public static void main(String[] args) {
@@ -24,5 +26,7 @@ public class ForumTest {
 		
 		forumService3.removeTopic(90);
 		forumService3.removeForum(12);
+//		BeforeAdvice
+		
 	}
 }
