@@ -1,6 +1,7 @@
 package cn.blmdz.aop.spring;
 
 import org.springframework.aop.BeforeAdvice;
+import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.ProxyFactory;
 
 public class TestBeforeAdvice {
@@ -16,5 +17,6 @@ public class TestBeforeAdvice {
 		Waiter proxy = (Waiter) proxyFactory.getProxy();
 		proxy.greetTo("Tom");
 		proxy.serveTo("Tom");
+//		AopProxy
 	}
 }
