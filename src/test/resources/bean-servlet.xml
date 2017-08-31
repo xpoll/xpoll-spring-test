@@ -39,4 +39,22 @@ org/dtd/spring-beans.dtd">
 	<bean class="cn.blmdz.event.SendListener" />
 	<bean class="cn.blmdz.event.Sender" />
 	
+	<bean id="greetingBeforeAdvice" class="cn.blmdz.aop.spring.GreetingBeforeAdvice"/>
+	<bean id="greetingAfterAdvice" class="cn.blmdz.aop.spring.GreetingAfterAdvice"/>
+	<bean id="greetingInterceptor" class="cn.blmdz.aop.spring.GreetingInterceptor"/>
+	<bean id="transactionAdvice" class="cn.blmdz.aop.spring.TransactionAdvice"/>
+	<bean id="target" class="cn.blmdz.aop.spring.NaiveWaiter"/>
+	
+	<bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value = "cn.blmdz.aop.spring.Waiter"/>
+		<property name="target" ref = "target"/>
+		<property name="interceptorNames">
+			<list>
+				<value>greetingBeforeAdvice</value>
+				<value>greetingAfterAdvice</value>
+				<value>greetingInterceptor</value>
+				<value>transactionAdvice</value>
+			</list>
+		</property>
+	</bean>
 </beans> 

@@ -17,7 +17,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 
-public class SolrCloudTest {
+public class SolrTest {
 
 	public static void main(String[] args) throws SolrServerException, IOException {
 		HttpSolrClient client = new HttpSolrClient("http://127.0.0.1:8983/solr/jobs");
@@ -26,9 +26,9 @@ public class SolrCloudTest {
         client.setMaxTotalConnections(100);
         client.setSoTimeout(30000);
         
-		add(client);
-		delete(client);
-//		query(client);
+//		add(client);
+//		delete(client);
+		query(client);
 	}
 	
 	public static void delete(SolrClient client) throws SolrServerException, IOException {
@@ -52,8 +52,7 @@ public class SolrCloudTest {
 
 	public static void query(SolrClient client) throws SolrServerException, IOException {
 		SolrQuery params = new SolrQuery();
-		// params.set("q", "name:*f*");
-		params.setQuery("李");
+		params.set("q", "name:张三");
 		params.setStart(0);
 		params.setRows(10);
 		params.setSort(new SortClause("time_dt", ORDER.desc));
@@ -65,13 +64,16 @@ public class SolrCloudTest {
 		QueryResponse rsp = client.query(params);
 		SolrDocumentList docs = rsp.getResults();
 		
-		
+		if (docs == null) {
+			System.out.println("无数据");
+			return;
+		}
 		for (SolrDocument doc : docs) {
 			
 
 			Map<String, Map<String, List<String>>> highlighting = rsp.getHighlighting();
 			List<String> hList = highlighting.get(doc.get("id")).get("name");
-			System.out.println(hList.get(0));
+			System.out.print(hList.get(0) + "   ");
 			
 			
 			for (String key : doc.getFieldNames()) {

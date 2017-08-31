@@ -16,7 +16,7 @@ public class ReflectTest {
 		System.out.println(loader.getParent());
 		System.out.println(loader.getParent().getParent());
 		Class clazz = loader.loadClass("cn.blmdz.test.reflect.Car");
-		
+
 		Constructor<Car> cons = clazz.getDeclaredConstructor(null);
 		
 		Car car = cons.newInstance();

@@ -2,8 +2,6 @@ package cn.blmdz.aop.test;
 
 import java.lang.reflect.Proxy;
 
-import org.springframework.aop.BeforeAdvice;
-
 public class ForumTest {
 
 	public static void main(String[] args) {

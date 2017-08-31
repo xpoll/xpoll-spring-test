@@ -4,6 +4,10 @@ import java.lang.reflect.Method;
 
 import org.springframework.aop.MethodBeforeAdvice;
 
+/**
+ * 前置增强
+ * @date 2017年8月31日
+ */
 public class GreetingBeforeAdvice implements MethodBeforeAdvice {
 
 	@Override
