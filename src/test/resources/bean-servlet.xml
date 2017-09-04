@@ -46,8 +46,8 @@ org/dtd/spring-beans.dtd">
 	<bean id="target" class="cn.blmdz.aop.spring.NaiveWaiter"/>
 	
 	<bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="proxyInterfaces" value = "cn.blmdz.aop.spring.Waiter"/>
-		<property name="target" ref = "target"/>
+		<property name="proxyInterfaces" value="cn.blmdz.aop.spring.Waiter"/>
+		<property name="target" ref="target"/>
 		<property name="interceptorNames">
 			<list>
 				<value>greetingBeforeAdvice</value>
@@ -56,5 +56,15 @@ org/dtd/spring-beans.dtd">
 				<value>transactionAdvice</value>
 			</list>
 		</property>
+	</bean>
+	
+	
+	<bean id="pmonitor" class="cn.blmdz.aop.spring.ControllablePerformanceMonitor"/>
+	<bean id="forumServiceTarget" class="cn.blmdz.aop.test.ForumServiceImpl2"/>
+	<bean id="forumService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces" value="cn.blmdz.aop.spring.Monitorable"/>
+		<property name="target" ref="forumServiceTarget"/>
+		<property name="interceptorNames" value="pmonitor"/>
+		<property name="proxyTargetClass" value="true"/>
 	</bean>
 </beans> 
