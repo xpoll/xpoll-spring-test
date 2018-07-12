@@ -67,4 +67,6 @@ org/dtd/spring-beans.dtd">
 		<property name="interceptorNames" value="pmonitor"/>
 		<property name="proxyTargetClass" value="true"/>
 	</bean>
+	
+	
 </beans> 

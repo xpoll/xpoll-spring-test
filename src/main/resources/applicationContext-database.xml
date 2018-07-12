@@ -10,9 +10,9 @@
 		">
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="url" value="jdbc:mysql://localhost:3306/db_test" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+        <property name="url" value="${db.url}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 	</bean>
 	

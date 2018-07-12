@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd  
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		">
+
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${jms.server}" />
+        <property name="prefetchPolicy">
+            <bean class="org.apache.activemq.ActiveMQPrefetchPolicy">
+                <property name="queuePrefetch" value="1" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+        <property name="connectionFactory" ref="targetConnectionFactory" />
+        <property name="maxConnections" value="100" />
+    </bean>
+
+    <bean id="connectionFactory"
+        class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="pooledConnectionFactory" />
+    </bean>
+
+    <!--Queue -->
+    <bean id="firstQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="FirstQueue" />
+    </bean>
+    
+    <!-- ErrorHandler -->
+    <bean id="jmsErrorHandler" class="cn.blmdz.test.jms.JmsErrorHandler"></bean>
+
+    <!-- MessageListener -->
+    <bean id="notifyQueueMessage" class="cn.blmdz.test.jms.NotifyQueueMessageListener" />
+
+    <!-- ListenerContainer -->
+    <bean id="notifyListenerContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="errorHandler" ref="jmsErrorHandler" />
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="firstQueue" />
+        <property name="messageListener" ref="notifyQueueMessage" />
+        <property name="sessionTransacted" value="false" />
+        <!-- 设置固定的线程数 -->
+        <property name="concurrentConsumers" value="1"></property>
+        <!-- 设置最大的线程数 -->
+        <property name="maxConcurrentConsumers" value="8"></property>
+    </bean>
+
+</beans> 
