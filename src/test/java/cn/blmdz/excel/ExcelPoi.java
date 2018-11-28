@@ -5,6 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,6 +19,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import lombok.Data;
 
 
 
@@ -33,64 +40,111 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelPoi {
     
-    private static void work(Workbook workbook, Integer num) {
-        int s = num / 1000000 + (num % 1000000 > 0 ? 1 : 0)/* - workbook.getNumberOfSheets()*/;
-        for (int i = 0; i < s; i++) {
-            workbook.createSheet();
+    public enum ExcelType {
+        HSSFWorkbook("EXCEL2003; 65535行256列; 一般不会OOM;"),
+        XSSFWorkbook("EXCEL2007; 1048576行16384列; 数据大会OOM;"),
+        SXSSFWorkbook("EXCEL2007; 1048576行16384列; 根据DEFAULT_WINDOW_SIZE大小 超出条数将原来的持久化到硬盘解决OOM问题 默认100(基本默认即可);"),
+        ;
+        ExcelType(String description) {}
+    }
+    
+    @Data
+    public static class ExcelModel {
+        private String fileName;
+        private ExcelType excelType;
+        private Boolean append = false;
+        private String[] columnDescription;
+        private String[] columnCode;
+        private List<Map<String, String>> data;
+    }
+    
+    public static void excelCreate(ExcelModel model) throws IOException {
+        Workbook workbook = null;
+        switch (model.getExcelType()) {
+        case HSSFWorkbook:
+            workbook = new HSSFWorkbook();
+            break;
+        case SXSSFWorkbook:
+            workbook = new SXSSFWorkbook();
+            break;
+        case XSSFWorkbook:
+            workbook = new XSSFWorkbook();
+            break;
         }
-        for (int i = 0; i < num; i++) {
+        
+
+        int s = model.getData().size() / 1000000 + (model.getData().size() % 1000000 > 0 ? 1 : 0);
+        for (int i = 0; i < s; i++) {
+            workbook.createSheet("sheet" + (i + 1));
+        }
+        String tmp = null;
+        for (int i = 0; i < model.getData().size(); i++) {
             
             Sheet sheet = workbook.getSheetAt(i / 1000000);
             Row row = sheet.createRow(i % 1000000);
-            for (int j = 0; j < 11; j++) {
+
+            for (int j = 0; j < model.getColumnDescription().length; j++) {
                 if(i == 0) {
                     // 首行
-                    row.createCell(j).setCellValue("column" + j);
+                    tmp = model.getColumnDescription()[j];
                 } else {
                     // 数据
-                    if (j == 0) {
-                        CellUtil.createCell(row, j, String.valueOf(i));
-                    } else
-                        CellUtil.createCell(row, j, String.valueOf(Math.random()));
+                    tmp = model.getData().get(i).get(model.getColumnCode()[j]);
                 }
+//              row.createCell(j).setCellValue(tmp);
+                CellUtil.createCell(row, j, tmp);
             }
         }
-    }
 
-    public static void excelCreate(String filePath, Integer num, Workbook workbook) throws IOException {
-        work(workbook, num);
-        FileOutputStream out = new FileOutputStream(filePath, true);
+        FileOutputStream out = new FileOutputStream(model.getFileName(), true);
         workbook.write(out);
         if (out != null) out.close();
         if (workbook instanceof SXSSFWorkbook)((SXSSFWorkbook) workbook).dispose();
         if (workbook != null) workbook.close();
     }
-
+    
+    
 
     public static void main(String[] args) throws Exception {
-        Integer num = 100;
-        long beginTime = System.currentTimeMillis();
-        excelCreate("./excel1.xls", num, new HSSFWorkbook());
-        System.out.println("excelHSSFWorkbook Cast time : " + (System.currentTimeMillis() - beginTime));
-        beginTime = System.currentTimeMillis();
-        excelCreate("./excel2.xlsx", num, new XSSFWorkbook());
-        System.out.println("excelXSSFWorkbook Cast time : " + (System.currentTimeMillis() - beginTime));
-        beginTime = System.currentTimeMillis();
-        excelCreate("./excel3.xlsx", num, new SXSSFWorkbook());
-        System.out.println("excelSXSSFWorkbook Cast time : " + (System.currentTimeMillis() - beginTime));
+        String[] columnDescription = {"阿斯", "蒂芬", "斯芬", "阿蒂"};
+        String[] columnCode = {"a", "b", "c", "d"};
+        List<Map<String, String>> lists = new ArrayList<>();
+        Map<String, String> map = null;
+        for (int i = 0; i < 100; i++) {
+            map = new HashMap<>();
+            map.put("a", String.valueOf(ThreadLocalRandom.current().nextDouble()));
+            map.put("b", String.valueOf(ThreadLocalRandom.current().nextDouble()));
+            map.put("c", String.valueOf(ThreadLocalRandom.current().nextDouble()));
+            map.put("d", String.valueOf(ThreadLocalRandom.current().nextDouble()));
+            lists.add(map);
+        }
+        ExcelModel model = new ExcelModel();
+        model.setFileName("./excel.xlsx");
+        model.setExcelType(ExcelType.XSSFWorkbook);
+        model.setColumnDescription(columnDescription);
+        model.setColumnCode(columnCode);
+        model.setData(lists);
+        excelCreate(model);
+
         
-        excelRead("./excel3.xlsx", new GetWorkbook() {
-            @Override
-            public Workbook get(FileInputStream is) throws IOException {
-                return new XSSFWorkbook(is);
-            }
-        });
+        excelRead("./excel.xlsx", ExcelType.SXSSFWorkbook);
         
     }
     
-    public static void excelRead(String filePath, GetWorkbook getWorkbook) throws IOException {
+    public static void excelRead(String filePath, ExcelType type) throws IOException {
+
+        
         FileInputStream is = new FileInputStream(new File(filePath));
-        Workbook workbook = getWorkbook.get(is);
+        Workbook workbook = null;
+
+        switch (type) {
+        case HSSFWorkbook:
+            workbook = new HSSFWorkbook(is);
+        case SXSSFWorkbook:
+            workbook = new SXSSFWorkbook(new XSSFWorkbook(is));
+        case XSSFWorkbook:
+            workbook = new XSSFWorkbook(is);
+        }
         
         // Sheet
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -134,7 +188,4 @@ public class ExcelPoi {
         if (workbook != null) workbook.close();
     }
 
-    public interface GetWorkbook {
-        Workbook get(FileInputStream is) throws IOException;
-    }
 }
