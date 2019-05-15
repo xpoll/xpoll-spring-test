@@ -8,8 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.code128.Code128Bean;
+import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
 
 /**
  * 条形码工具类
@@ -59,21 +62,26 @@ public class BarcodeUtil {
 		if (msg == null || msg.length() == 0 || ous == null) {
 			return;
 		}
-		Code128Bean bean = new Code128Bean();
-
 		// 精细度
 		final int dpi = 500;
-//		final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
-//		System.out.println(moduleWidth);
+		final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
+		System.out.println(moduleWidth);
+		
 		// 配置对象
-		bean.setModuleWidth(0.2);
-		bean.setHeight(10);
-		bean.setFontSize(0);
+		Code128Bean bean = new Code128Bean();
+		bean.setModuleWidth(moduleWidth * 4);
+		bean.doQuietZone(false);
+		bean.setMsgPosition(HumanReadablePlacement.HRP_BOTTOM);
 //		bean.setFontName("微软雅黑");
 //		bean.setBarHeight(20);
 //		bean.setQuietZone(20);
 //		bean.setWideFactor(3);
+		
+//		Code39Bean bean = new Code39Bean();
+//		bean.setModuleWidth(moduleWidth * 2);
+//		bean.setWideFactor(5);
 //		bean.doQuietZone(false);
+//		bean.setMsgPosition(HumanReadablePlacement.HRP_BOTTOM);
 
 		String format = "image/png";
 		try {
@@ -94,7 +102,7 @@ public class BarcodeUtil {
 	}
 
 	public static void main(String[] args) {
-		String msg = "8022210002002800009";
+		String msg = "5405594271";
 		String path = "barcode.png";
 		generateFile(msg, path);
 	}

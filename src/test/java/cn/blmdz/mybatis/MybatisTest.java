@@ -5,13 +5,9 @@ import java.io.IOException;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
-import org.apache.ibatis.executor.result.DefaultResultHandler;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.ResultContext;
-import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -65,8 +61,8 @@ public class MybatisTest {
     
     public static void main(String[] args) throws IOException {
         test1();
-        test2();
-        test3();
+//        test2();
+//        test3();
     }
     
     static class A {
